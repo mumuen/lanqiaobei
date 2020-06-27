@@ -10,14 +10,21 @@ public class Solution {
 //        ListNode l1=new ListNode(1);
 //        ListNode l2=new ListNode(2);
 //        ListNode l3=new ListNode(3);
-//        ListNode l4=new ListNode(4);
-//        ListNode l5=new ListNode(5);
-//        ListNode l6=new ListNode(6);
+//        ListNode l4=new ListNode(6);
+//        ListNode l5=new ListNode(9999);
+//        ListNode l6=new ListNode(9);
 //        l1.next=l2;
 //        l2.next=l3;
 //        l3.next=l4;
 //        l4.next=l5;
 //        l5.next=l6;
+//        ListNode listNode = addTwoNumbers1(l1, l5);
+//
+////        ListNode listNode = addTwoNumbers(l1, l5);
+//        while(listNode!=null){
+//            System.out.println(listNode.val);
+//            listNode=listNode.next;
+//        }
 //        TreeNode n1 = new TreeNode(3);
 //        TreeNode n2 = new TreeNode(2);
 //        TreeNode n3 = new TreeNode(3);
@@ -99,25 +106,364 @@ public class Solution {
 //        test(arr);
 //        maxDepthAfterSplit("((()))");
 //        int[][] matrix={
-//                {1,2,3,4,5},
-//                {16,17,18,19,6},
-//                {15,24,25,20,7},
-//                {14,23,22,21,8},
-//                {13,12,11,10,9}
+//                {1,0,1},
+//                {1,1,1},
+//                {0,1,1},
 //        };
+//        int[][] matrix={
+//                {0},
+//                {0},
+//                {0},
+//                {0},
+//                {0}
+//        };
+//        int[][] ints = updateMatrix1(matrix);
+//        for(int[] a:ints){
+//            System.out.println(Arrays.toString(a));
+//        }
 //        int[][] matrix={{1},
 ////        };
 //        List<Integer> list = spiralOrder(matrix);
 //        System.out.println(list);
-        int board[][]={
-                {0,1,0},
-                {0,0,1},
-                {1,1,1},
-                {0,0,0}
-        };
-        gameOfLife(board);
+//        int board[][]={
+//                {0,1,0},
+//                {0,0,1},
+//                {1,1,1},
+//                {0,0,0}
+//        };
+//        gameOfLife(board);
+//        int arr[]={1,2,0,1};
+//        trap(arr);
+//        trap1(arr);
+//        int jump = jump(arr);
+//        System.out.println(jump);
+//        generateParenthesis(3);
+//        System.out.println(list);
+//        reverseWords("a  bc");
+//        int arr1[]={1,2};
+//        int arr2[]={3};
+//        findMedianSortedArrays(arr1,arr2);
+//        int[] arr={-3, -2, -1, 0, 0, 1,2,3};
+//        int[] arr={0,0,0,0};
+//        int[] arr={1,-2,-5,-4,-3,3,3,5};
+//        List<List<Integer>> lists = fourSum(arr, -11);
+//        for(List<Integer> list:lists){
+//            System.out.println(list);
+//        }
+//        int x=2;
+//        int y=4;
+
+//        x=x+y;
+//        y=x-y;
+//        x=x-y;
+
+//        x=x^y;
+//        即y=y^y^x,y^y=0,0^任何数等于他自身
+//        y=x^y;
+//        现在的x=最初的x^y  现在的y=最初的y^y^x
+//        x=x^y;
+//        System.out.println(x);
+//        System.out.println(y);
+//        int arr[]={1,0,1,2};
+//        boolean b = canJump(arr);
+//        System.out.println(b);
+        int i = waysToChange(100);
+        System.out.println(i);
+    }
+    static int count=0;
+    public static int waysToChange(int n) {
+        int values[]={1,5,10,25};
+        dfs(values,0,n);
+        return count;
+    }
+    public static void dfs(int[] values,int index,int n){
+        if(n<0){
+            return;
+        }
+        if(n==0){
+            count++;
+            return;
+        }
+        for(int i=index;i<values.length;i++){
+            dfs(values,i,n-values[i]);
+        }
+    }
+    public static List<Integer> rightSideView(TreeNode root) {
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        List<Integer> list=new LinkedList<>();
+        while(!queue.isEmpty()){
+            int size=queue.size();
+            list.add(queue.getFirst().val);
+            for(int i=0;i<size;i++){
+                TreeNode poll = queue.poll();
+                if(poll.right!=null){
+                    queue.add(poll.right);
+                }
+                if(poll.left!=null){
+                    queue.add(poll.left);
+                }
+            }
+        }
+
+        return list;
+    }
+    public static boolean canJump(int[] nums) {
+        int start=0;
+        int end=0;
+        while(end<nums.length-1&&nums[end]!=0){
+            int max=start;
+            int length=0;
+            for(int i=start;i<=end;i++){
+                if(nums[i]+i>max){
+                    max=nums[i]+i;
+                    length=i;
+                }
+            }
+            start=start+length;
+            end=max;
+        }
+        return end>=(nums.length-1);
+    }
+    public static int[][] updateMatrix1(int[][] matrix) {
+        int M=matrix.length;
+        int N=matrix[0].length;
+        ArrayDeque<int[]> ints = new ArrayDeque<>();
+        for(int i=0;i<M;i++){
+            for(int j=0;j<N;j++){
+                if(matrix[i][j]==0){
+                    ints.addLast(new int[]{i,j});
+                }else{
+                    matrix[i][j]=Integer.MAX_VALUE;
+                }
+            }
+        }
+        int arr[][]={{0,1},{0,-1},{1,0},{-1,0}};
+        while(!ints.isEmpty()){
+            int[] poll = ints.poll();
+            for(int k=0;k<4;k++){
+                int x=poll[0]+arr[k][0];
+                int y=poll[1]+arr[k][1];
+                if(x<0||x>=M||y<0||y>=N||matrix[poll[0]][poll[1]]>=matrix[x][y]){
+                    continue;
+                }
+                matrix[x][y]=matrix[poll[0]][poll[1]]+1;
+                ints.add(new int[]{x,y});
+            }
+        }
+        return matrix;
     }
 
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> lists=new ArrayList<>();
+        for(int i=0;i<nums.length-3;i++){
+//            if(nums[i]>target){
+//                break;
+//            }
+            if(i>0&&nums[i]==nums[i-1]){
+                continue;
+            }
+            for(int j=i+1;j<nums.length-2;j++){
+                if(j>i+1&&nums[j]==nums[j-1]){
+                    continue;
+                }
+                int left=j+1;
+                int right=nums.length-1;
+                while (left<right){
+                    int sum=nums[i]+nums[j]+nums[left]+nums[right];
+                    if(sum==target){
+                        ArrayList<Integer> list = new ArrayList<>();
+                        list.add(nums[i]);
+                        list.add(nums[j]);
+                        list.add(nums[left]);
+                        list.add(nums[right]);
+                        lists.add(list);
+                        while(left<right&&nums[left+1]==nums[left]){
+                            left++;
+                        }
+                        while(left<right&&nums[right-1]==nums[right]){
+                            right--;
+                        }
+                        left++;
+                        right--;
+                    }else if(sum<target){
+                        left++;
+                    }else if(sum>target){
+                        right--;
+                    }
+                }
+            }
+        }
+        return lists;
+    }
+    public static ListNode addTwoNumbers1(ListNode l1, ListNode l2) {
+        Stack<Integer> stack1 = new Stack<>();
+        Stack<Integer> stack2 = new Stack<>();
+
+        ListNode first=l1;
+        ListNode second=l2;
+        while (first!=null){
+            stack1.push(first.val);
+            first=first.next;
+        }
+        while (second!=null){
+            stack2.push(second.val);
+            second=second.next;
+        }
+        int chusu=0;
+        ListNode head=null;
+        while(!stack1.isEmpty()||!stack2.isEmpty()||chusu>0){
+            int sum=chusu;
+            if(!stack1.isEmpty()){
+                sum+=stack1.pop();
+            }
+            if(!stack2.isEmpty()){
+                sum+=stack2.pop();
+            }
+            ListNode node = new ListNode(sum % 10);
+            node.next=head;
+            head=node;
+            chusu=sum/10;
+        }
+        return head;
+    }
+
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int length=(nums1.length+nums2.length)/2+1;
+        int left=0;
+        int right=0;
+        int count=0;
+        while(count<length){
+            if(left<nums1.length&&right<nums2.length&&nums1[left]<nums2[right]){
+                left++;
+            }else if(left<nums1.length&&right<nums2.length&&nums1[left]>=nums2[right]){
+                right++;
+            }else if(left==nums1.length){
+                right++;
+            }else if(right==nums2.length){
+                left++;
+            }
+            count++;
+        }
+        System.out.println(left+"::"+right);
+//        int max = Math.max(nums1[left - 1], nums2[right - 1]);
+//        double mid=(double) max/2;
+//        System.out.println(mid);
+        return 1.0;
+    }
+    public static String reverseWords(String s) {
+        String[] s1 = s.trim().split(" +");
+        Stack<String> stack=new Stack<>();
+        for(int i=0;i<s1.length;i++){
+            stack.push(s1[i]);
+        }
+        StringBuilder sb=new StringBuilder();
+        while (!stack.isEmpty()){
+            sb.append(stack.pop()+" ");
+        }
+        return sb.toString().trim();
+    }
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode firstNode=l1;
+        ListNode secondNode=l2;
+        ListNode thirdNode=new ListNode(0);
+        boolean flag=false;
+        ListNode n=thirdNode;
+        int x=0;
+        do{
+            int sum=0;
+            if(firstNode!=null){
+                sum=sum+firstNode.val;
+                firstNode=firstNode.next;
+            }
+            if(secondNode!=null){
+                sum+=secondNode.val;
+                secondNode=secondNode.next;
+            }
+            int y=sum+x;
+            if(flag){
+                ListNode node=new ListNode(0);
+                node.val=y%10;
+                thirdNode.next=node;
+                x=y/10;
+                thirdNode=thirdNode.next;
+            }else{
+                thirdNode.val=y%10;
+                x=y/10;
+                flag=true;
+            }
+        }while (firstNode!=null||secondNode!=null||x>0);
+
+        return n;
+    }
+//    static List<String> list=new ArrayList<>();
+//    public static List<String> generateParenthesis(int n) {
+//        dfs(0,0,"",n);
+//        return list;
+//    }
+
+//    private static void dfs(int left, int right, String str, int n) {
+//        if(right==n){
+////            System.out.println(str);
+//            list.add(str);
+//            return;
+//        }
+//        if(left<n){
+//            dfs(left+1,right,str+"(",n);
+//        }
+//        if(right<left){
+//            dfs(left,right+1,str+")",n);
+//        }
+//    }
+
+    public static int jump(int[] nums) {
+        int step=0;
+        int start=0;
+        int end=0;
+        while(end<nums.length-1){
+            int max=start;
+            for(int i=start;i<=end;i++){
+                if(nums[i]+i>max){
+                    max=nums[i]+i;
+                }
+            }
+            end=end+max;
+            start=end+1;
+            step++;
+        }
+        return step;
+    }
+    public static int trap(int[] height) {
+        int ans=0;
+        Stack<Integer> stack=new Stack<>();
+        for(int i=0;i<height.length;i++){
+            while(!stack.isEmpty()&&height[stack.peek()]<height[i]){
+                Integer pop = stack.pop();
+                if(!stack.isEmpty()){
+                    ans=ans+(Math.min(height[stack.peek()],height[i])-height[pop])*(i-stack.peek()-1);
+                }
+            }
+            stack.push(i);
+        }
+
+        return ans;
+    }
+    public static int trap1(int[] height) {
+        int left_max=0;
+        int ans=0;
+        int right_maxs[]=new int[height.length];
+        for(int i=height.length-2;i>=0;i--){
+            right_maxs[i]=Math.max(right_maxs[i+1],height[i+1]);
+        }
+        for(int i=1;i<height.length-1;i++){
+            left_max=Math.max(left_max,height[i-1]);
+            if(height[i]<left_max&&height[i]<right_maxs[i]){
+                ans=ans+Math.min(right_maxs[i],left_max)-height[i];
+            }
+        }
+        return ans;
+    }
     public static void gameOfLife(int[][] board) {
         if(board.length==0){
             return;

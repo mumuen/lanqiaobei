@@ -13,12 +13,32 @@ public class Main {
 //        int d[]={-1,-2};
 //        int i = fourSumCount(a, b, c, d);
 //        System.out.println(i);
-        int arr[][]={{4,3,1},{3,2,4},{3},{4},{}};
-        List<List<Integer>> lists = allPathsSourceTarget(arr);
-        for(List<Integer> l:lists){
-            System.out.println(l);
-        }
+//        int arr[][]={{4,3,1},{3,2,4},{3},{4},{}};
+//        List<List<Integer>> lists = allPathsSourceTarget(arr);
+//        for(List<Integer> l:lists){
+//            System.out.println(l);
+//        }
+
+        int solution = solution(5);
+        System.out.println(solution);
     }
+
+    public static int solution(int n){
+        int x=n;
+
+        int base=1;
+        int res=0;
+        for(int i=9;i>=2;i--){
+            while(n%i==0){
+                res+=i*base;
+                base*=10;
+                n/=i;
+            }
+        }
+
+        return x>1?res:-1;
+    }
+
     public static List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         return solve(graph, 0);
     }
